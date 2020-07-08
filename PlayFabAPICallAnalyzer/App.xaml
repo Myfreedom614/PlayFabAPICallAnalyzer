@@ -1,0 +1,22 @@
+﻿<Application x:Class="PlayFabAPICallAnalyzer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PlayFabAPICallAnalyzer"
+             xmlns:View ="clr-namespace:PlayFabAPICallAnalyzer.View"
+             xmlns:ViewModel ="clr-namespace:PlayFabAPICallAnalyzer.ViewModel"
+             StartupUri="View\Bootstrapper.xaml">
+    <Application.Resources>
+        <DataTemplate DataType="{x:Type ViewModel:BootstrapperVM}">
+            <View:Bootstrapper />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModel:WelcomeVM}">
+            <View:WelcomeView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModel:APIResultVM}">
+            <View:APIResultView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModel:ResultAPIVM}">
+            <View:ResultAPIView />
+        </DataTemplate>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayFabAPICallAnalyzer", "PlayFabAPICallAnalyzer\PlayFabAPICallAnalyzer.csproj", "{4B1547ED-CA5B-48B5-933D-2CA3840AE78C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B1547ED-CA5B-48B5-933D-2CA3840AE78C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B1547ED-CA5B-48B5-933D-2CA3840AE78C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B1547ED-CA5B-48B5-933D-2CA3840AE78C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B1547ED-CA5B-48B5-933D-2CA3840AE78C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D0DC8722-0DB5-4C19-AA81-D25386B2E089}
+	EndGlobalSection
+EndGlobal
