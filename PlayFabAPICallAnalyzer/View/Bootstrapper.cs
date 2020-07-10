@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,11 @@ namespace PlayFabAPICallAnalyzer.View
     /// </summary>
     public partial class Bootstrapper : Window
     {
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public Bootstrapper()
         {
             InitializeComponent();
+            log4net.Config.XmlConfigurator.Configure();
         }
     }
 }
