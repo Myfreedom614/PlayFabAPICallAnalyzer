@@ -11,7 +11,7 @@
         xmlns:ctl="clr-namespace:PlayFabAPICallAnalyzer.Control"
         xmlns:ext="clr-namespace:PlayFabAPICallAnalyzer.Extension"
         mc:Ignorable="d"
-        Title="PlayFabAPICallAnalyzer" Height="450" Width="800" MinHeight="450" MinWidth="800">
+        Title="{Binding WindowTitle}" Height="450" Width="800" MinHeight="450" MinWidth="800">
     <Window.DataContext>
         <vm:BootstrapperVM />
     </Window.DataContext>

@@ -99,7 +99,7 @@ namespace PlayFabAPICallAnalyzer.ViewModel
         {
             Process proc = new Process();
             var assName = Assembly.GetExecutingAssembly().GetName();
-            proc.StartInfo.FileName = $"mailto:yapchen@microsoft.com?subject=[Feedback] {assName.Name} V{assName.Version.ToString()}&body=Hi Franklin,";
+            proc.StartInfo.FileName = $"mailto:yapchen@microsoft.com?subject=[Feedback] {assName.Name} V{assName.Version}&body=Hi Franklin,";
             proc.Start();
         }
     }

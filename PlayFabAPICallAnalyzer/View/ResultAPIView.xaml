@@ -4,8 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PlayFabAPICallAnalyzer.View"
+             xmlns:cv="clr-namespace:PlayFabAPICallAnalyzer.Converter"
+             xmlns:ctl="clr-namespace:PlayFabAPICallAnalyzer.Control"
+             xmlns:ext="clr-namespace:PlayFabAPICallAnalyzer.Extension"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <cv:TimeStampConverter x:Key="TimeStampConverter" />
+        <cv:DGHeaderConverter x:Key="DGHeaderConverter" />
+    </UserControl.Resources>
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -19,8 +27,88 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.RowSpan="4" Grid.ColumnSpan="3" Text="Working on it...Thanks" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Data Type:" />
+        <ComboBox Grid.Row="1" Grid.Column="0" Margin="5, 2" 
+                  Name="cbxControllerList" 
+                  ItemsSource="{Binding SourceData}"
+                  SelectedItem="{Binding SelectedController}"
+                  IsTextSearchEnabled="True" TextSearch.TextPath="ControllerName">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding ControllerName}" />
+                    </Grid>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Result:" />
+        <ComboBox Grid.Row="1" Grid.Column="1" Margin="5, 2" 
+                  Name="cbxResultList" 
+                  ItemsSource="{Binding ResultSource}"
+                  SelectedValue="{Binding SelectedError}"
+                  IsTextSearchEnabled="True" TextSearch.TextPath="Result">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Result}" />
+                    </Grid>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="API:" />
+        <ComboBox Grid.Row="1" Grid.Column="2" Margin="5, 2" 
+                  Name="cbxAPIList"
+                  ItemsSource="{Binding SelectedItem.Series,ElementName=cbxResultList}"
+                  SelectedValue="{Binding SelectedAPI}"
+                  IsTextSearchEnabled="True" TextSearch.TextPath="apiName">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding apiName}" />
+                    </Grid>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="3" Visibility="{Binding ShowTimeRange, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Text="{Binding SelectedController.A[0].Query.From}" />
+            <TextBlock Text=" - " />
+            <TextBlock Text="{Binding SelectedController.A[0].Query.To}" />
+            <TextBlock Text=" (UTC)" Foreground="Red" />
+            <TextBlock Text=":" />
+        </StackPanel>
+        <DataGrid x:Name="dgResult"  Grid.Row="3" Grid.ColumnSpan="3" CanUserSortColumns="True"
+                  ItemsSource="{Binding SelectedItem.pointlist,ElementName=cbxAPIList}"
+                  ext:DataGridExtensions.SortDesc="True"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn>
+                    <DataGridTextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Name="tbTS"  Text="{Binding IsChecked, ElementName=cbUTC, Converter={StaticResource DGHeaderConverter}}"/>
+                        </DataTemplate>
+                    </DataGridTextColumn.HeaderTemplate>
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding Converter="{StaticResource TimeStampConverter}">
+                            <Binding Path="[0]" />
+                            <Binding Path="IsChecked" ElementName="cbUTC" />
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Vol" Binding="{Binding [1]}" />
+            </DataGrid.Columns>
+        </DataGrid>
         <DockPanel Grid.Row="4" Grid.ColumnSpan="3">
+            <CheckBox x:Name="cbUTC"  Content="UTC?" VerticalAlignment="Center" IsChecked="true" />
+            <Button Content="Export" Margin="30, 0" VerticalAlignment="Center"  Command="{Binding Path=ExportCommand}" CommandParameter="{Binding .,ElementName=dgResult}"  />
             <Button Content="Back to First Page" Margin="5, 0" HorizontalAlignment="Right"  VerticalAlignment="Center" Command="{Binding DataContext.DisplayWelcomeView, RelativeSource=
                     {RelativeSource AncestorType={x:Type local:Bootstrapper}}, Mode=OneWay}" CommandParameter="{Binding SourcePath}"  />
         </DockPanel>

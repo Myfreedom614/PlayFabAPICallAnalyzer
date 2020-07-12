@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,8 +22,18 @@ namespace PlayFabAPICallAnalyzer.ViewModel
             get => _viewModel;
             set => SetProperty(ref _viewModel, value);
         }
+
+        private string _windowTitle;
+        public string WindowTitle
+        {
+            get => _windowTitle;
+            set => SetProperty(ref _windowTitle, value);
+        }
+
         public BootstrapperVM()
         {
+            var assName = Assembly.GetExecutingAssembly().GetName();
+            WindowTitle = $"{assName.Name} V{assName.Version}";
             ViewModel = new WelcomeVM();
         }
 
