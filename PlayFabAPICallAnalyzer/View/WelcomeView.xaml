@@ -6,9 +6,6 @@
              xmlns:local="clr-namespace:PlayFabAPICallAnalyzer.View"
              mc:Ignorable="d" 
              d:DesignHeight="430" d:DesignWidth="800">
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    </UserControl.Resources>
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />

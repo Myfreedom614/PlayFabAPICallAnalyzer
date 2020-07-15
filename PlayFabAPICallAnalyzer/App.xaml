@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:PlayFabAPICallAnalyzer"
              xmlns:View ="clr-namespace:PlayFabAPICallAnalyzer.View"
              xmlns:ViewModel ="clr-namespace:PlayFabAPICallAnalyzer.ViewModel"
+             xmlns:cv="clr-namespace:PlayFabAPICallAnalyzer.Converter"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              StartupUri="View\Bootstrapper.xaml">
     <Application.Resources>
         <DataTemplate DataType="{x:Type ViewModel:BootstrapperVM}">
@@ -18,5 +20,12 @@
         <DataTemplate DataType="{x:Type ViewModel:ResultAPIVM}">
             <View:ResultAPIView />
         </DataTemplate>
+
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <cv:TimeStampConverter x:Key="TimeStampConverter" />
+        <cv:DGHeaderConverter x:Key="DGHeaderConverter" />
+        <cv:DateTimeAxisDTConverter x:Key="DateTimeAxisDTConverter" />
+
+        <sys:String x:Key="TimestampStringFormat">yyyy-MM-dd HH:mm:ss</sys:String>
     </Application.Resources>
 </Application>

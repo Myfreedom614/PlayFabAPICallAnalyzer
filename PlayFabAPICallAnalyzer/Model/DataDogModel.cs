@@ -59,6 +59,12 @@ namespace PlayFabAPICallAnalyzer.Model
         public string To { get; set; }
     }
 
+    public class PointStandardModel
+    {
+        public DateTime TimeStamp { get; set; }
+        public string Vol { get; set; }
+    }
+
     public class PointUTCModel
     {
         public DateTime TimeStamp_UTC { get; set; }

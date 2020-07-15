@@ -9,11 +9,6 @@
              xmlns:ext="clr-namespace:PlayFabAPICallAnalyzer.Extension"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <cv:TimeStampConverter x:Key="TimeStampConverter" />
-        <cv:DGHeaderConverter x:Key="DGHeaderConverter" />
-    </UserControl.Resources>
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
