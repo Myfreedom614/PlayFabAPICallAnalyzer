@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PlayFabAPICallAnalyzer.View"
-             xmlns:cv="clr-namespace:PlayFabAPICallAnalyzer.Converter"
              xmlns:ctl="clr-namespace:PlayFabAPICallAnalyzer.Control"
              xmlns:ext="clr-namespace:PlayFabAPICallAnalyzer.Extension"
+             xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="5">
@@ -61,6 +61,7 @@
                   Name="cbxAPIList"
                   ItemsSource="{Binding SelectedItem.Series,ElementName=cbxResultList}"
                   SelectedValue="{Binding SelectedAPI}"
+                  SelectedItem="{Binding SelectedSeriesItem}"
                   IsTextSearchEnabled="True" TextSearch.TextPath="apiName">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
@@ -80,29 +81,75 @@
             <TextBlock Text=" (UTC)" Foreground="Red" />
             <TextBlock Text=":" />
         </StackPanel>
-        <DataGrid x:Name="dgResult"  Grid.Row="3" Grid.ColumnSpan="3" CanUserSortColumns="True"
+        <Grid Grid.Row="3" Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <DataGrid x:Name="dgResult"  Grid.ColumnSpan="1" CanUserSortColumns="True"
                   ItemsSource="{Binding SelectedItem.pointlist,ElementName=cbxAPIList}"
                   ext:DataGridExtensions.SortDesc="True"
                   AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn>
-                    <DataGridTextColumn.HeaderTemplate>
-                        <DataTemplate>
-                            <TextBlock Name="tbTS"  Text="{Binding IsChecked, ElementName=cbUTC, Converter={StaticResource DGHeaderConverter}}"/>
-                        </DataTemplate>
-                    </DataGridTextColumn.HeaderTemplate>
-                    <DataGridTextColumn.Binding>
-                        <MultiBinding Converter="{StaticResource TimeStampConverter}">
-                            <Binding Path="[0]" />
-                            <Binding Path="IsChecked" ElementName="cbUTC" />
-                        </MultiBinding>
-                    </DataGridTextColumn.Binding>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Vol" Binding="{Binding [1]}" />
-            </DataGrid.Columns>
-        </DataGrid>
+                <DataGrid.Columns>
+                    <DataGridTextColumn>
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Name="tbTS"  Text="{Binding IsChecked, ElementName=cbUTC, Converter={StaticResource DGHeaderConverter}}"/>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                        <DataGridTextColumn.Binding>
+                            <MultiBinding Converter="{StaticResource TimeStampConverter}">
+                                <Binding Path="[0]" />
+                                <Binding Path="IsChecked" ElementName="cbUTC" />
+                            </MultiBinding>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Vol" Binding="{Binding [1]}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Center"
+              VerticalAlignment="Stretch"
+              Background="Yellow" 
+              ShowsPreview="True"
+              Width="5"/>
+            <oxy:Plot Grid.Column="2">
+                <oxy:Plot.Axes>
+                    <oxy:DateTimeAxis Position="Bottom" StringFormat="{StaticResource ResourceKey=TimestampStringFormat}" Angle="10"/>
+                    <oxy:LinearAxis Maximum="{Binding DataMax}" />
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:LineSeries
+                        Color="Red"
+                        MarkerType="Plus"
+                        MarkerFill="Orange"
+                        MarkerStroke="Orange"
+                        ItemsSource="{Binding DataPoints}" />
+                </oxy:Plot.Series>
+                <oxy:Plot.DefaultTrackerTemplate>
+                    <ControlTemplate>
+                        <oxy:TrackerControl Position="{Binding Position}"  
+                                BorderThickness="1">
+                            <oxy:TrackerControl.Content>
+                                <StackPanel Margin="5,0">
+                                    <DockPanel>
+                                        <TextBlock Text="Timestamp: " Foreground="Red" />
+                                        <TextBlock DockPanel.Dock="Right" Text="{Binding DataPoint.X, Converter={StaticResource DateTimeAxisDTConverter}}" Foreground="Red" />
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <TextBlock Text="Value: " Foreground="Green" />
+                                        <TextBlock DockPanel.Dock="Right" Text="{Binding DataPoint.Y}" Foreground="Green" 
+                                       FontWeight="Bold" />
+                                    </DockPanel>
+                                </StackPanel>
+                            </oxy:TrackerControl.Content>
+                        </oxy:TrackerControl>
+                    </ControlTemplate>
+                </oxy:Plot.DefaultTrackerTemplate>
+            </oxy:Plot>
+        </Grid>
         <DockPanel Grid.Row="4" Grid.ColumnSpan="3">
-            <CheckBox x:Name="cbUTC"  Content="UTC?" VerticalAlignment="Center" IsChecked="true" />
+            <CheckBox x:Name="cbUTC"  Content="UTC?" VerticalAlignment="Center" IsChecked="{Binding IsUtc}" />
             <Button Content="Export" Margin="30, 0" VerticalAlignment="Center"  Command="{Binding Path=ExportCommand}" CommandParameter="{Binding .,ElementName=dgResult}"  />
             <Button Content="Back to First Page" Margin="5, 0" HorizontalAlignment="Right"  VerticalAlignment="Center" Command="{Binding DataContext.DisplayWelcomeView, RelativeSource=
                     {RelativeSource AncestorType={x:Type local:Bootstrapper}}, Mode=OneWay}" CommandParameter="{Binding SourcePath}"  />

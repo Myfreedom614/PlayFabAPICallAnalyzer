@@ -27,6 +27,7 @@ namespace PlayFabAPICallAnalyzer.ViewModel
         private SeriesItemModel _selectedSeriesItem;
         private List<DataPoint> _dataPoints;
         private bool _isUtc;
+        private double _dataMax;
         private readonly DelegateCommand _exportCommand;
 
         public string SourcePath
@@ -101,7 +102,6 @@ namespace PlayFabAPICallAnalyzer.ViewModel
                 SetProperty(ref _isUtc, value);
             }
         }
-        private double _dataMax;
         public double DataMax
         {
             get => _dataMax;
@@ -122,26 +122,10 @@ namespace PlayFabAPICallAnalyzer.ViewModel
             DataLoader(sourcePath);
         }
 
-        private IEnumerable<DataPoint> ConvertPointModel(SeriesItemModel sim, bool isUTC)
-        {
-            if(sim != null)
-            {
-                var data = from x in sim.pointlist select new DataPoint(DateTimeAxis.ToDouble(Helper.UnixTimeStampToDateTime(x[0].NullableDoubleToDouble(), isUTC)), x[1].NullableDoubleToDouble());
-                var max = data.Max(x => x.Y);
-                var min = data.Min(x=>x.Y);
-                min = double.IsNaN(min) ? 0.0 : min;
-                var buff = (max > min) ? (max - min) / 10 : 10;
-                DataMax = double.IsNaN(max) ? 100 : max + buff;
-                return data;
-            }
-            return null;
-        }
-
         private void OnExport(object commandParameter)
         {
             var dg = commandParameter as DataGrid;
-            var tbTS = Helper.FindChild<TextBlock>(dg, "tbTS");
-            if (tbTS.Text.Contains("UTC"))
+            if (_isUtc)
             {
                 ExportToExcel<PointUTCModel> s = new ExportToExcel<PointUTCModel>();
                 ICollectionView view = CollectionViewSource.GetDefaultView(dg.ItemsSource);
@@ -160,6 +144,20 @@ namespace PlayFabAPICallAnalyzer.ViewModel
                 s.GenerateReport();
             }
             
+        }
+        private IEnumerable<DataPoint> ConvertPointModel(SeriesItemModel sim, bool isUTC)
+        {
+            if (sim != null)
+            {
+                var data = from x in sim.pointlist select new DataPoint(DateTimeAxis.ToDouble(Helper.UnixTimeStampToDateTime(x[0].NullableDoubleToDouble(), isUTC)), x[1].NullableDoubleToDouble());
+                var max = data.Max(x => x.Y);
+                var min = data.Min(x => x.Y);
+                min = double.IsNaN(min) ? 0.0 : min;
+                var buff = (max > min) ? (max - min) / 10 : 10;
+                DataMax = double.IsNaN(max) ? 100 : max + buff;
+                return data;
+            }
+            return null;
         }
 
         private void UpdateChart(bool isUTC)

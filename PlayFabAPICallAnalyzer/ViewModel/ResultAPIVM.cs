@@ -1,4 +1,6 @@
-﻿using PlayFabAPICallAnalyzer.Model;
+﻿using OxyPlot;
+using OxyPlot.Axes;
+using PlayFabAPICallAnalyzer.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,6 +22,11 @@ namespace PlayFabAPICallAnalyzer.ViewModel
         private List<ResultModel> _resultSource;
         private MItemModel _selectedController;
         private bool _showTimeRange = false;
+        private string _selectedError;
+        private SeriesItemModel _selectedSeriesItem;
+        private List<DataPoint> _dataPoints;
+        private bool _isUtc;
+        private double _dataMax;
         private readonly DelegateCommand _exportCommand;
 
         public string SourcePath
@@ -70,22 +77,50 @@ namespace PlayFabAPICallAnalyzer.ViewModel
             get => _selectedAPI;
             set => SetProperty(ref _selectedAPI, value);
         }
-        private string _selectedError;
         public string SelectedError
         {
             get => _selectedError;
             set => SetProperty(ref _selectedError, value);
         }
-
+        public SeriesItemModel SelectedSeriesItem
+        {
+            get => _selectedSeriesItem;
+            set
+            {
+                SetProperty(ref _selectedSeriesItem, value);
+                UpdateChart(_isUtc);
+            }
+        }
+        public List<DataPoint> DataPoints
+        {
+            get => _dataPoints;
+            set => SetProperty(ref _dataPoints, value);
+        }
+        public bool IsUtc
+        {
+            get => _isUtc;
+            set
+            {
+                if (_isUtc != value) UpdateChart(value);
+                SetProperty(ref _isUtc, value);
+            }
+        }
+        public double DataMax
+        {
+            get => _dataMax;
+            set => SetProperty(ref _dataMax, value);
+        }
         public ICommand ExportCommand => _exportCommand;
 
         public ResultAPIVM()
         {
+            IsUtc = true;
             _exportCommand = new DelegateCommand(OnExport);
         }
 
         public ResultAPIVM(string sourcePath)
         {
+            IsUtc = true;
             _exportCommand = new DelegateCommand(OnExport);
             SourcePath = sourcePath;
             DataLoader(sourcePath);
@@ -94,8 +129,7 @@ namespace PlayFabAPICallAnalyzer.ViewModel
         private void OnExport(object commandParameter) 
         {
             var dg = commandParameter as DataGrid;
-            var tbTS = Helper.FindChild<TextBlock>(dg, "tbTS");
-            if (tbTS.Text.Contains("UTC"))
+            if (_isUtc)
             {
                 ExportToExcel<PointUTCModel> s = new ExportToExcel<PointUTCModel>();
                 ICollectionView view = CollectionViewSource.GetDefaultView(dg.ItemsSource);
@@ -113,6 +147,31 @@ namespace PlayFabAPICallAnalyzer.ViewModel
                 s.dataToPrint = scfix.ToList();
                 s.GenerateReport();
             }
+        }
+
+        private IEnumerable<DataPoint> ConvertPointModel(SeriesItemModel sim, bool isUTC)
+        {
+            if (sim != null)
+            {
+                var data = from x in sim.pointlist select new DataPoint(DateTimeAxis.ToDouble(Helper.UnixTimeStampToDateTime(x[0].NullableDoubleToDouble(), isUTC)), x[1].NullableDoubleToDouble());
+                var max = data.Max(x => x.Y);
+                var min = data.Min(x => x.Y);
+                min = double.IsNaN(min) ? 0.0 : min;
+                var buff = (max > min) ? (max - min) / 10 : 10;
+                DataMax = double.IsNaN(max) ? 100 : max + buff;
+                return data;
+            }
+            return null;
+        }
+
+        private void UpdateChart(bool isUTC)
+        {
+            if (_selectedSeriesItem != null)
+            {
+                var cpm = ConvertPointModel(_selectedSeriesItem, isUTC);
+                DataPoints = cpm != null ? cpm.ToList() : new List<DataPoint>();
+            }
+
         }
 
         public void DataLoader(string sourcePath)
