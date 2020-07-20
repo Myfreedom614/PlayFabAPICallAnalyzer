@@ -1,13 +1,7 @@
-﻿using Microsoft.Expression.Interactivity.Core;
-using PlayFabAPICallAnalyzer.Model;
-using System;
-using System.Collections.Generic;
+﻿using PlayFabAPICallAnalyzer.Model;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 
