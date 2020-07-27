@@ -13,13 +13,18 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <TextBlock HorizontalAlignment="Right" Margin="0,5,5,0" ToolTip="Click Here to Send Feedback">
-                <Hyperlink NavigateUri="" Command="{Binding Path=SendFeedbackCommand}">
-                    Send Feedback
+                <Hyperlink NavigateUri="" TextDecorations="None" Command="{Binding Path=SendFeedbackCommand}">
+                    Feedback
                 </Hyperlink>
             </TextBlock>
-        </Grid>
+            <TextBlock HorizontalAlignment="Right" Margin="0,5,5,0" ToolTip="Hackathon project link">
+                <Hyperlink NavigateUri="" TextDecorations="None"  Command="{Binding Path=HackathonCommand}" CommandParameter="https://garagehackbox.azurewebsites.net/hackathons/2107/projects/91929" Foreground="Red">
+                    ❤
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
         <Grid Grid.Row="1">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="25">
                 <TextBox Width="200" Text="{Binding SelectedFileName}"></TextBox>

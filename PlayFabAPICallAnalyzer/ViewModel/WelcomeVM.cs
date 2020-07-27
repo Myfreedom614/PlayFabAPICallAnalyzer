@@ -96,5 +96,18 @@ namespace PlayFabAPICallAnalyzer.ViewModel
             proc.StartInfo.FileName = $"mailto:yapchen@microsoft.com?subject=[Feedback] {assName.Name} V{assName.Version}&body=Hi Franklin,";
             proc.Start();
         }
+
+        private RelayCommand mHackathonCommand;
+        public ICommand HackathonCommand
+        {
+            get
+            {
+                return mHackathonCommand ?? (mHackathonCommand = new RelayCommand(GoToHackathon));
+            }
+        }
+        private void GoToHackathon(object url)
+        {
+            Process.Start(url.ToString());
+        }
     }
 }
