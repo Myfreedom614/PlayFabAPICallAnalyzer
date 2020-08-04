@@ -39,6 +39,20 @@ namespace PlayFabAPICallAnalyzer.ViewModel
             ViewModel = new WelcomeVM(sourcePath);
         }
 
+        private ICommand _displayAPIRatioView;
+        public ICommand DisplayAPIRatioView
+        {
+            get
+            {
+                return _displayAPIRatioView ?? (_displayAPIRatioView = new CommandHandler(param => OnDisplayAPIRatioView(param), true));
+            }
+        }
+        private void OnDisplayAPIRatioView(object param)
+        {
+            var sourcePath = param as string;
+            ViewModel = new APIRatioVM(sourcePath);
+        }
+
         private ICommand _displayAPIResultView;
         public ICommand DisplayAPIResultView
         {

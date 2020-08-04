@@ -32,13 +32,23 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2" Visibility="{Binding isValidData, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <TextBlock Text="Breakdown->" Margin="200, 0, 0, 0"  VerticalAlignment="Center" />
-            <StackPanel Orientation="Horizontal" Margin="0,10" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Button Content="API->Result" Margin="10, 0" Command="{Binding DataContext.DisplayAPIResultView, RelativeSource=
+            <Border Visibility="Visible" BorderThickness="2" BorderBrush="LightGray" CornerRadius="8" Margin="30,30,30,30">
+                <StackPanel Margin="3">
+                    <Label  Height="25" Content="Breakdown" Background="LightSkyBlue" />
+                    <Separator Height="5"/>
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" Margin="0,20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Button Content="API Request Ratio" Margin="10, 0" Command="{Binding DataContext.DisplayAPIRatioView, RelativeSource=
                     {RelativeSource AncestorType={x:Type local:Bootstrapper}}, Mode=OneWay}" CommandParameter="{Binding SelectedFilePath}" />
-                <Button Content="Result->API" Margin="10, 0" Command="{Binding DataContext.DisplayResultAPIView, RelativeSource=
+                            <Button Content="API->Result" Margin="10, 0" Command="{Binding DataContext.DisplayAPIResultView, RelativeSource=
+                    {RelativeSource AncestorType={x:Type local:Bootstrapper}}, Mode=OneWay}" CommandParameter="{Binding SelectedFilePath}" />
+                            <Button Content="Result->API" Margin="10, 0" Command="{Binding DataContext.DisplayResultAPIView, RelativeSource=
                     {RelativeSource AncestorType={x:Type local:Bootstrapper}}, Mode=OneWay}" CommandParameter="{Binding SelectedFilePath}"  />
-            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
         </Grid>
         <Grid Grid.Row="3" >
             <TextBlock Text="{Binding MessageModel.Message}" Foreground="{Binding MessageModel.MessageBrush}" FontSize="16" TextAlignment="Center" TextWrapping="WrapWithOverflow"/>

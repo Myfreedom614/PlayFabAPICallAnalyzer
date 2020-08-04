@@ -76,6 +76,9 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="3" Visibility="{Binding ShowTimeRange, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Text="TitleId: " />
+            <TextBlock Text="{Binding ResultSource[0].TitleId}" />
+            <TextBlock Text=", " />
             <TextBlock Text="{Binding SelectedController.A[0].Query.From}" />
             <TextBlock Text=" - " />
             <TextBlock Text="{Binding SelectedController.A[0].Query.To}" />

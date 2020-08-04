@@ -28,7 +28,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.4.0.0</ApplicationVersion>
+    <ApplicationVersion>1.5.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -119,12 +119,16 @@
     <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Model\MessageModel.cs" />
     <Compile Include="Model\ResultModel.cs" />
+    <Compile Include="ViewModel\APIRatioVM.cs" />
     <Compile Include="ViewModel\BootstrapperVM.cs" />
     <Compile Include="ViewModel\DelegateCommand.cs" />
     <Compile Include="ViewModel\APIResultVM.cs" />
     <Compile Include="ViewModel\ResultAPIVM.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\WelcomeVM.cs" />
+    <Compile Include="View\APIRequestRatio.xaml.cs">
+      <DependentUpon>APIRequestRatio.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\APIResultView.xaml.cs">
       <DependentUpon>APIResultView.xaml</DependentUpon>
     </Compile>
@@ -134,6 +138,10 @@
     <Compile Include="View\WelcomeView.xaml.cs">
       <DependentUpon>WelcomeView.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\APIRequestRatio.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Bootstrapper.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

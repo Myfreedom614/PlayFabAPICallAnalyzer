@@ -47,6 +47,7 @@ namespace PlayFabAPICallAnalyzer.Model
         public dynamic group { get; set; }
         public string apiName { get; set; }
         public string result { get; set; }
+        public string titleid { get; set; }
     }
     public class AttrModel
     {

@@ -58,7 +58,7 @@ namespace PlayFabAPICallAnalyzer.ViewModel
                     var resultModel = from sc in selectedCol
                                       group sc by sc.apiName into newGroup
                                       orderby newGroup.Key
-                                      select new ResultModel() { APIName = newGroup.Key, Series = newGroup.ToList() };
+                                      select new ResultModel() { APIName = newGroup.Key, TitleId=newGroup.ToList()[0].titleid, Series = newGroup.ToList() };
                     ResultSource = resultModel.ToList();
                 }
                 else

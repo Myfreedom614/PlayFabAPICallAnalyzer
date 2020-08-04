@@ -27,6 +27,11 @@ namespace PlayFabAPICallAnalyzer
             return d.HasValue ? d.Value : Double.NaN;
         }
 
+        public static double NullableDoubleToDouble2(this double? d)
+        {
+            return d.HasValue ? d.Value : 0.0;
+        }
+
         public static string NullableDoubleToString(this double? d)
         {
             return d.HasValue ? d.Value.ToString() : string.Empty;
@@ -107,13 +112,14 @@ namespace PlayFabAPICallAnalyzer
                 {
                     foreach (var sc in ma.SeriesCollection)
                     {
-                        Regex rx = new Regex(@"api:(.*),error_code:(.*),",
+                        Regex rx = new Regex(@"api:(.*),error_code:(.*),title_id:(.*)",
                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
                         var matches = rx.Matches(sc.scope);
                         if (matches.Count > 0)
                         {
                             sc.apiName = matches[0].Groups[1].Value;
                             sc.result = matches[0].Groups[2].Value;
+                            sc.titleid = matches[0].Groups[3].Value;
                         }
                     }
                 }

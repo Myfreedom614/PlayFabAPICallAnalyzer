@@ -20,6 +20,9 @@
         <DataTemplate DataType="{x:Type ViewModel:ResultAPIVM}">
             <View:ResultAPIView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModel:APIRatioVM}">
+            <View:APIRequestRatio />
+        </DataTemplate>
 
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <cv:TimeStampConverter x:Key="TimeStampConverter" />
