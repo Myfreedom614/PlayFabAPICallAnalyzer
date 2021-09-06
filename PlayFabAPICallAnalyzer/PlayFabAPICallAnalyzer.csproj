@@ -15,7 +15,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>\\CN-YAPCHEN\Publish\PlayFabAPICallAnalyzer\</PublishUrl>
+    <PublishUrl>\\CEDev-TP\Publish\PlayFabAPICallAnalyzer\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
